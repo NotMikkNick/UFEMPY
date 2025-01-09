@@ -3,19 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'app.dart';
 import 'firebase_options.dart';
+import 'package:uwuployyy/core/services/firestore_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
-  //Stellt sicher, dass die Flutter-Widgets-Bindung initialisiert ist.
   WidgetsFlutterBinding.ensureInitialized();
-  //Initialisiert Firebase mit den plattformspezifischen Optionen.
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  //Erzwingt die Ausrichtung der App im Hochformat.
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  //Startet die Haupt-App (UwUPloyApp).
+  final user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final firestoreService = FirestoreService();
+    final userData = await firestoreService.getUser(
+        user.uid); // Benutzerdaten abrufen
+    if (userData != null) {
+      await firestoreService.updateLastAppOpen(
+          userData.id); // Richtige ID verwenden
+    }
+  }
   runApp(const UwUPloyApp());
 }

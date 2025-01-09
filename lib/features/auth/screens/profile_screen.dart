@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:uwuployyy/features/auth/screens/profile_screen.dart';
-import 'package:uwuployyy/features/auth/screens/id_list_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:uwuployyy/core/services/firestore_service.dart';
 import 'package:uwuployyy/core/models/user_model.dart';
+import 'package:uwuployyy/core/services/firestore_service.dart';
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +13,7 @@ class WelcomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Willkommen'),
+        title: const Text('Profil'),
       ),
       body: FutureBuilder<UserModel?>(
         future: firestoreService.getUser(user!.uid),
@@ -34,23 +32,9 @@ class WelcomeScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Willkommen!'),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/profile');
-                  },
-                  child: const Text('Zum Profil'),
-                ),
-                const SizedBox(height: 20),
-                if (userData.isAdmin)
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, '/idList'); // Korrekte Navigation
-                    },
-                    child: const Text('Zur ID-Liste'),
-                  ),
+                Text('E-Mail: ${userData.email}'),
+                const SizedBox(height: 16),
+                Text('ID: ${userData.id}'),
               ],
             ),
           );
