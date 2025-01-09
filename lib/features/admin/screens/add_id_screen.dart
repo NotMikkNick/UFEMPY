@@ -31,7 +31,7 @@ class _AddIdScreenState extends State<AddIdScreen> {
             TextField(
               controller: _idController,
               decoration: const InputDecoration(
-                labelText: 'Neue ID',
+                labelText: 'ID',
               ),
             ),
             const SizedBox(height: 20),
@@ -39,24 +39,18 @@ class _AddIdScreenState extends State<AddIdScreen> {
               onPressed: () async {
                 final id = _idController.text.trim();
                 if (id.isNotEmpty) {
-                  final isValid = await _firestoreService.isValidId(id);
-                  if (!isValid) {
-                    await _firestoreService.addValidId(id);
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('ID hinzugefügt')),
-                      );
-                    }
-                  } else {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('ID existiert bereits')),
-                      );
-                    }
+                  await _firestoreService.addValidId(id);
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('ID hinzugefügt')),
+                    );
+                  }
+                  if (context.mounted) {
+                    Navigator.pop(context);
                   }
                 }
               },
-              child: const Text('ID hinzufügen'),
+              child: const Text('Hinzufügen'),
             ),
           ],
         ),

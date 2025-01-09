@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uwuployyy/core/models/user_model.dart';
 import 'package:uwuployyy/core/models/id_model.dart';
+import 'package:uwuployyy/core/models/admin_user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<bool> isValidId(String id) async {
     final doc = await _firestore.collection('validIds').doc(id).get();
@@ -65,5 +68,26 @@ class FirestoreService {
 
   Future<void> deleteId(String id) async {
     await _firestore.collection('validIds').doc(id).delete();
+  }
+
+  Future<List<AdminUserModel>> getAllUsers() async {
+    final snapshot = await _firestore.collection('users').get();
+    return snapshot.docs.map((doc) =>
+        AdminUserModel(id: doc.get('id'),
+            email: doc.get('email'),
+            userId: doc.get('userId'))).toList();
+  }
+
+  Future<void> deleteUser(String userId) async {
+    await _firestore.collection('users').doc(userId).delete();
+    final user = _auth.currentUser;
+    if (user != null && user.uid == userId) {
+      await user.delete();
+    }
+  }
+
+  Future<void> updateUser(String userId, String newEmail) async {
+    await _firestore.collection('users').doc(userId).update(
+        {'email': newEmail});
   }
 }

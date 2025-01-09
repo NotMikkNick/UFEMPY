@@ -4,7 +4,10 @@ import 'package:uwuployyy/features/auth/screens/register_screen.dart';
 import 'package:uwuployyy/features/auth/screens/welcome_screen.dart';
 import 'package:uwuployyy/features/auth/screens/profile_screen.dart';
 import 'package:uwuployyy/features/auth/screens/id_list_screen.dart';
-import 'package:uwuployyy/features/auth/screens/add_id_screen.dart';
+import 'package:uwuployyy/features/admin/screens/add_id_screen.dart'; // Korrekter Import
+import 'package:uwuployyy/features/auth/screens/user_list_screen.dart';
+import 'package:uwuployyy/features/admin/screens/edit_user_screen.dart';
+import 'package:uwuployyy/core/models/admin_user_model.dart';
 
 class UwUPloyApp extends StatelessWidget {
   const UwUPloyApp({super.key});
@@ -24,7 +27,10 @@ class UwUPloyApp extends StatelessWidget {
         '/welcome': (context) => const WelcomeScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/idList': (context) => const IdListScreen(),
-        '/addId': (context) => const AddIdScreen(), // Neue Route
+        '/addId': (context) => const AddIdScreen(), // Korrekter Import
+        '/userList': (context) => const UserListScreen(),
+        '/editUser': (context) =>
+            EditUserScreen(user: AdminUserModel(id: '', email: '', userId: '')),
       },
     );
   }

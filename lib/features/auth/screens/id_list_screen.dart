@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uwuployyy/core/models/id_model.dart';
 import 'package:uwuployyy/core/services/firestore_service.dart';
 import 'package:intl/intl.dart';
-import 'package:uwuployyy/features/auth/screens/add_id_screen.dart';
+import 'package:uwuployyy/features/admin/screens/add_id_screen.dart'; // Korrekter Import
 
 class IdListScreen extends StatelessWidget {
   const IdListScreen({super.key});

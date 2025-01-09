@@ -4,6 +4,7 @@ import 'package:uwuployyy/features/auth/screens/id_list_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uwuployyy/core/services/firestore_service.dart';
 import 'package:uwuployyy/core/models/user_model.dart';
+import 'package:uwuployyy/features/auth/screens/user_list_screen.dart'; // Korrekter Import
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -46,10 +47,18 @@ class WelcomeScreen extends StatelessWidget {
                 if (userData.isAdmin)
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(
-                          context, '/idList'); // Korrekte Navigation
+                      Navigator.pushNamed(context, '/idList');
                     },
                     child: const Text('Zur ID-Liste'),
+                  ),
+                const SizedBox(height: 20),
+                if (userData
+                    .isAdmin) // Nur anzeigen, wenn der Benutzer ein Administrator ist
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/userList');
+                    },
+                    child: const Text('Zur Benutzerliste'),
                   ),
               ],
             ),
