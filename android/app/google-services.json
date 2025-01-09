@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "201354427562",
+    "project_id": "todo-7c90f",
+    "storage_bucket": "todo-7c90f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201354427562:android:582e1ea5c5b1ff611a24d3",
+        "android_client_info": {
+          "package_name": "com.marwinraabe.uwuploy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3hAIckyilACxpa_jewCJ8FtFwvj4LUtc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
