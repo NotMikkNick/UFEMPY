@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uwuployyy/features/auth/widgets/auth_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uwuployyy/features/auth/screens/welcome_screen.dart';
+import 'package:uwuployyy/features/auth/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -36,10 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // Erfolgreiche Anmeldung
         print('Erfolgreich angemeldet');
         // Navigiere zum WelcomeScreen
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-        );
+        Navigator.pushReplacementNamed(context, '/welcome');
       } on FirebaseAuthException catch (e) {
         // Fehler bei der Anmeldung
         print('Fehler bei der Anmeldung: ${e.message}');
@@ -99,6 +97,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   : ElevatedButton(
                 onPressed: _login,
                 child: const Text('Anmelden'),
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/register');
+                },
+                child: const Text('Noch kein Konto? Registrieren'),
               ),
             ],
           ),

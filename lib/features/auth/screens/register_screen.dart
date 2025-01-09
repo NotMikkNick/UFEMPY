@@ -42,11 +42,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
           password: _passwordController.text,
           id: _idController.text,
         );
+        // ... (vorheriger Code) ...
         // Erfolgreiche Registrierung
         print('Erfolgreich registriert');
-        // Hier kannst du zum Login-Bildschirm navigieren
-        Navigator.pop(context);
+        // Hier kannst du zum WelcomeScreen navigieren
+        Navigator.pushReplacementNamed(context, '/welcome');
       } catch (e) {
+// ... (restlicher Code) ...
         // Fehler bei der Registrierung
         print('Fehler bei der Registrierung: $e');
         ScaffoldMessenger.of(context).showSnackBar(
