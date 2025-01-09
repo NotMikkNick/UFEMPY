@@ -1,50 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:uwuployyy/features/auth/widgets/auth_form_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:uwuployyy/features/auth/screens/welcome_screen.dart';
+import 'package:uwuployyy/core/services/auth_service.dart';
+import 'package:uwuployyy/core/services/firestore_service.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _idController = TextEditingController();
   bool _isLoading = false;
+  final AuthService _authService = AuthService();
+  final FirestoreService _firestoreService = FirestoreService();
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _idController.dispose();
     super.dispose();
   }
 
-  void _login() async {
+  void _register() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
       try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+        final isIdValid = await _firestoreService.isValidId(_idController.text);
+        if (!isIdValid) {
+          throw Exception('Ungültige oder bereits verwendete ID.');
+        }
+        await _authService.registerWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
+          id: _idController.text,
         );
-        // Erfolgreiche Anmeldung
-        print('Erfolgreich angemeldet');
-        // Navigiere zum WelcomeScreen
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-        );
-      } on FirebaseAuthException catch (e) {
-        // Fehler bei der Anmeldung
-        print('Fehler bei der Anmeldung: ${e.message}');
+        // Erfolgreiche Registrierung
+        print('Erfolgreich registriert');
+        // Hier kannst du zum Login-Bildschirm navigieren
+        Navigator.pop(context);
+      } catch (e) {
+        // Fehler bei der Registrierung
+        print('Fehler bei der Registrierung: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Fehler bei der Anmeldung: ${e.message}')),
+          SnackBar(content: Text('Fehler bei der Registrierung: $e')),
         );
       } finally {
         setState(() {
@@ -58,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Registrieren'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -67,6 +73,17 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              AuthFormField(
+                controller: _idController,
+                labelText: 'ID',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Bitte ID eingeben';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
               AuthFormField(
                 controller: _emailController,
                 labelText: 'E-Mail',
@@ -97,8 +114,8 @@ class _LoginScreenState extends State<LoginScreen> {
               _isLoading
                   ? const CircularProgressIndicator()
                   : ElevatedButton(
-                onPressed: _login,
-                child: const Text('Anmelden'),
+                onPressed: _register,
+                child: const Text('Registrieren'),
               ),
             ],
           ),
