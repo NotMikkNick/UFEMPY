@@ -62,4 +62,8 @@ class FirestoreService {
     await _firestore.collection('validIds').doc(id).update(
         {'lastAppOpen': DateTime.now()});
   }
+
+  Future<void> deleteId(String id) async {
+    await _firestore.collection('validIds').doc(id).delete();
+  }
 }

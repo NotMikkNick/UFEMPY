@@ -45,6 +45,44 @@ class IdListScreen extends StatelessWidget {
                       ),
                   ],
                 ),
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('ID löschen'),
+                          content: Text('Möchtest du die ID ${idData
+                              .id} wirklich löschen?'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('Abbrechen'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: const Text('Löschen'),
+                              onPressed: () async {
+                                await firestoreService.deleteId(idData.id);
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('ID gelöscht')),
+                                  );
+                                }
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
               );
             },
           );
